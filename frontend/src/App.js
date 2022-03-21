@@ -1,8 +1,12 @@
+import "./global.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routes from "./routes";
+
 function App() {
   return (
-    <div className="App">
-      <h1>hello word</h1>
-    </div>
+    <Router>
+      <Routes />
+    </Router>
   );
 }
 
