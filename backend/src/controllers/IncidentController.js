@@ -2,57 +2,69 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
-    const { page = 1 } = req.query;
+    try {
+      const { page = 1 } = req.query;
 
-    //contando casos
-    const [count] = await connection("incidents").count();
-    console.log(count);
-    //paginação
-    const incidents = await connection("incidents")
-      .join("ongs", "ongs.id", "=", "incidents.ong_id")
-      .limit(5)
-      .offset((page - 1) * 5)
-      .select([
-        "incidents.*",
-        "ongs.name",
-        "ongs.email",
-        "ongs.whatsapp",
-        "ongs.city",
-        "ongs.uf",
-      ]);
+      //contando casos
+      const [count] = await connection("incidents").count();
+      console.log(count);
+      //paginação
+      const incidents = await connection("incidents")
+        .join("ongs", "ongs.id", "=", "incidents.ong_id")
+        .limit(5)
+        .offset((page - 1) * 5)
+        .select([
+          "incidents.*",
+          "ongs.name",
+          "ongs.email",
+          "ongs.whatsapp",
+          "ongs.city",
+          "ongs.uf",
+        ]);
 
-    res.header("X-Total-Count", count["count(*)"]);
+      res.header("X-Total-Count", count["count(*)"]);
 
-    return res.json(incidents);
+      return res.json(incidents);
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   async create(req, res) {
-    const { title, description, value } = req.body;
-    const ong_id = req.headers.authorization;
+    try {
+      const { title, description, value } = req.body;
+      const ong_id = req.headers.authorization;
 
-    const [id] = await connection("incidents").insert({
-      title,
-      description,
-      value,
-      ong_id,
-    });
-    return res.json({ id });
+      const [id] = await connection("incidents").insert({
+        title,
+        description,
+        value,
+        ong_id,
+      });
+      return res.json({ id });
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   async delete(req, res) {
-    const { id } = req.params;
-    const ong_id = req.headers.authorization;
+    try {
+      const { id } = req.params;
+      const ong_id = req.headers.authorization;
 
-    const incidents = await connection("incidents")
-      .where("id", id)
-      .select("ong_id")
-      .first();
+      const incidents = await connection("incidents")
+        .where("id", id)
+        .select("ong_id")
+        .first();
 
-    if (incidents.ong_id !== ong_id) {
-      return res.status(401).json({ error: "Operation not permitted" });
+      if (incidents.ong_id !== ong_id) {
+        return res.status(401).json({ error: "Operation not permitted" });
+      }
+
+      await connection("incidents").where("id", id).delete();
+      return res.status(204).send();
+    } catch (error) {
+      console.log(error);
     }
-
-    await connection("incidents").where("id", id).delete();
-    return res.status(204).send();
   },
 };
