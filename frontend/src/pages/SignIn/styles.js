@@ -15,7 +15,7 @@ export const Section = styled.div`
   margin-right: 30px;
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
   margin-top: 100px;
 
   h1 {
