@@ -1,11 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 
 import { Container, Content, Section, Form, Group } from "./styles";
 import Logo from "../../assets/logo2.png";
+import api from "../../services/api";
 
 export function NewIncident() {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [value, setValue] = useState("");
+
+  const ongId = localStorage.getItem("ongId");
+  async function handleNewIncident(e) {
+    e.preventDefault();
+    const data = {
+      title,
+      description,
+      value,
+    };
+    try {
+      api.post("incidents", data, {
+        headers: {
+          Authorization: ongId,
+        },
+      });
+      navigate("/profile");
+    } catch (error) {
+      alert("Erro ao cadastrar caso, tente novamente.");
+    }
+  }
+  function handleCancel() {
+    navigate("/profile");
+  }
   return (
     <Container>
       <Content>
@@ -24,14 +52,35 @@ export function NewIncident() {
           </Link>
         </Section>
         <Form>
-          <input placeholder="Titulo do caso" />
-          <textarea placeholder="Descrição" />
-          <input type="number" placeholder="Valor em reais" />
+          <input
+            placeholder="Titulo do caso"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <textarea
+            placeholder="Descrição"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Valor em reais"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
           <Group>
-            <button type="button" className="button-cancelar">
+            <button
+              type="button"
+              className="button-cancelar"
+              onClick={() => handleCancel()}
+            >
               Cancelar
             </button>
-            <button type="submit" className="button">
+            <button
+              type="submit"
+              className="button"
+              onClick={handleNewIncident}
+            >
               Cadastrar
             </button>
           </Group>

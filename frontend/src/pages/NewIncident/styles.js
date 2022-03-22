@@ -52,7 +52,7 @@ export const Section = styled.div`
   }
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
   display: flex;
   width: 100%;
   max-width: 450px;
