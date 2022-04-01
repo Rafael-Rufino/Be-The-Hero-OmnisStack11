@@ -1,5 +1,5 @@
 const connection = require("../database/connection");
-const generateUniqueId = require("../utils/generateUnoqueld");
+const generateUniqueId = require("../../src/utils/generateUniqueId");
 
 module.exports = {
   async index(request, response) {
