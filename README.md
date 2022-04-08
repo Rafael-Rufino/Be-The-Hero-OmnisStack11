@@ -44,6 +44,12 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 <a id="#conceito-aprendido"></a>
 
+## CONCEITO APRENDIDO
+## - Teste de Integração
+
+## - Validação com Celebrete no backend
+## - Teste Unitario
+
 ## :heavy_check_mark: :iphone: Versão Desktop e Mobile
 
 <h1 align="center">
@@ -54,6 +60,12 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 <h1 align="center">
     <img alt="mobile" src="./.github/video.gif" width="900px">
+</h1>
+
+## :heavy_check_mark: :computer: Insomnia
+
+<h1 align="center">
+    <img alt="mobile" src="./.github/insomnia.png" width="900px">
 </h1>
 
 
